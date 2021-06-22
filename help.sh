@@ -3,7 +3,6 @@
 dir_code=$dir_log/code
 
 default_env_name=(
-    JD_COOKIE
     FRUITSHARECODES
     PETSHARECODES
     PLANT_BEAN_SHARECODES
@@ -19,7 +18,6 @@ default_env_name=(
     JDHEALTH_SHARECODES
 )
 default_var_name=(
-    Cookie
     ForOtherFruit
     ForOtherPet
     ForOtherBean
