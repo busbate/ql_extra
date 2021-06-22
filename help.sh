@@ -38,24 +38,15 @@ import_help_config() {
     [ ! -n "$var_name" ] && var_name=($(echo ${default_var_name[*]}))
 }
 
-## 统计用户数量
-count_user_sum() {
-    for ((i = 1; i <= ${SUM:-$((3 * 4))}; i++)); do
-        local tmp1=Cookie$i
-        local tmp2=${!tmp1}
-        [[ $tmp2 ]] && user_sum=$i || break
-    done
-}
-
+## 组合Cookie和互助码子程序，$1：要组合的内容
 combine_sub() {
     local what_combine=$1
     local combined_all=""
     local tmp1 tmp2
-    local block_cookie=${TempBlockCookie:-""}
+    local envs=$(eval echo "\$JD_COOKIE")
+    local array=($(echo $envs | sed 's/&/ /g'))
+    local user_sum=${#array[*]}
     for ((i = 1; i <= $user_sum; i++)); do
-        for num in $block_cookie; do
-            [[ $i -eq $num ]] && continue 2
-        done
         local tmp1=$what_combine$i
         local tmp2=${!tmp1}
         combined_all="$combined_all&$tmp2"
@@ -81,6 +72,6 @@ if [[ $p1 == *.js ]]; then
         . $dir_code/$latest_log
     fi
 fi
+
 import_help_config
-count_user_sum
 combine_all

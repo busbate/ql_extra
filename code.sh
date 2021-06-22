@@ -59,13 +59,11 @@ import_code_config() {
     [ ! -n "$name_chinese" ] && name_chinese=($(echo ${default_name_chinese[*]}))
 }
 
-## 统计用户数量
+## 统计用户
 count_user_sum() {
-    for ((i = 1; i <= ${SUM:-$((3 * 4))}; i++)); do
-        local tmp1=Cookie$i
-        local tmp2=${!tmp1}
-        [[ $tmp2 ]] && user_sum=$i || break
-    done
+    local envs=$(eval echo "\$JD_COOKIE")
+    Cookie=($(echo $envs | sed 's/&/ /g'))
+    user_sum=${#Cookie[*]}
 }
 
 ## 生成pt_pin清单
