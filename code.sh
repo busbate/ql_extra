@@ -3,6 +3,7 @@
 ## 路径、环境判断
 dir_shell=/ql/shell
 . $dir_shell/share.sh
+. $file_task_before
 
 dir_code=$dir_log/code
 
@@ -21,6 +22,7 @@ default_name_js=(
     jd_cfd
     jd_health
 )
+
 default_name_config=(
     Fruit
     Pet
@@ -36,6 +38,7 @@ default_name_config=(
     Cfd
     Health
 )
+
 default_name_chinese=(
     东东农场
     东东萌宠
