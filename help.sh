@@ -42,28 +42,11 @@ import_help_config() {
     [ ! -n "$var_name" ] && var_name=($(echo ${default_var_name[*]}))
 }
 
-blockJDCookie() {
-    local envs=$(eval echo "\$JD_COOKIE")
-    local array=($(echo $envs | sed 's/&/ /g'))
-    local block_arr=${BlockPtPin:-""}
-    local tmp1 i pt_pin_temp
-    local tempcookies=""
-    user_sum=${#array[*]}
-    for ((i = 0; i < $user_sum; i++)); do
-        pt_pin_temp=$(echo ${array[i]} | perl -pe "{s|.*pt_pin=([^; ]+)(?=;?).*|\1|; s|%|\\\x|g}")
-        if [[ $block_arr =~ $pt_pin_temp ]]; then
-            ##blockPin
-            block_pin[i]=true
-        else
-            block_pin[i]=false
-            tempcookies="$tempcookies&${array[i]}"
-        fi
-    done
-    export JD_COOKIE=$(echo $tempcookies | perl -pe "{s|^&||; s|^@+||; s|&@|&|g; s|@+&|&|g; s|@+|@|g; s|@+$||}")
-}
-
 ## 组合Cookie和互助码子程序，$1：要组合的内容
 combine_sub() {
+    local envs=$(eval echo "\$JD_COOKIE")
+    local array=($(echo $envs | sed 's/&/ /g'))
+    local user_sum=${#array[*]}
     local what_combine=$1
     local combined_all=""
     local tmp1 tmp2
@@ -99,5 +82,4 @@ if [[ $p1 == *.js ]]; then
 fi
 
 import_help_config
-blockJDCookie
 combine_all
