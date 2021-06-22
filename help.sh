@@ -44,17 +44,13 @@ import_help_config() {
 
 ## 组合Cookie和互助码子程序，$1：要组合的内容
 combine_sub() {
-    local envs=$(eval echo "\$JD_COOKIE")
-    local array=($(echo $envs | sed 's/&/ /g'))
-    local user_sum=${#array[*]}
     local what_combine=$1
     local combined_all=""
     local tmp1 tmp2
+    local envs=$(eval echo "\$JD_COOKIE")
+    local array=($(echo $envs | sed 's/&/ /g'))
+    local user_sum=${#array[*]}
     for ((i = 1; i <= $user_sum; i++)); do
-        j=$(($i - 1))
-        if [[ ${block_pin[j]} == true ]]; then
-            continue 1
-        fi
         local tmp1=$what_combine$i
         local tmp2=${!tmp1}
         combined_all="$combined_all&$tmp2"
