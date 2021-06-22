@@ -36,7 +36,7 @@ AutoHelpOther="true"
 HelpType=""
 
 ##name_js_prefix 批量前缀，可设置为JDHelloWorld_jd_scripts_
-name_js_prefix="JDHelloWorld_jd_scripts_"
+name_js_prefix="busbate_jd_"
 
 ## 需组合的环境变量列表，env_name需要和var_name一一对应，如何有新活动按照格式添加(不懂勿动)
 env_name=(

@@ -7,7 +7,7 @@
 ### 注意
 
 环境变量的 jd cookie 名称分别依次命名为 Cookie1、Cookie2  
-原定时互助码 ql code 更改为 bash /ql/repo/vipGhost0_ql_help/code.sh
+原定时互助码 ql code 更改为 bash /ql/repo/busbate_ql_extra/code.sh
 
 #### task_before.sh
 
@@ -38,7 +38,7 @@ case $(echo ${1%%.*}|sed -r "s/.*(j[d|x]_.*)/\1/g") in
      ;;
  esac
 ##调用助力
-. /ql/repo/vipGhost0_ql_help/help.sh
+. /ql/repo/busbate_ql_extra/help.sh
 ```
 
 #### 使用环境变量
@@ -60,7 +60,7 @@ AutoHelpOther="true"
 HelpType=""
 
 ##name_js_prefix 批量前缀，可设置为JDHelloWorld_jd_scripts_
-name_js_prefix="JDHelloWorld_jd_scripts_"
+name_js_prefix="busbate_jd_"
 ```
 
 以下为互助设置，已添加为内置参数，可不添加

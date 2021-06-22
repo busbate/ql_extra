@@ -52,6 +52,22 @@ default_name_chinese=(
     东东健康社区
 )
 
+##互助码设置
+import_code_config() {
+    [ ! -n "$name_js" ] && name_js=($(echo ${default_name_js[*]}))
+    [ ! -n "$name_config" ] && name_config=($(echo ${default_name_config[*]}))
+    [ ! -n "$name_chinese" ] && name_chinese=($(echo ${default_name_chinese[*]}))
+}
+
+## 统计用户数量
+count_user_sum() {
+    for ((i = 1; i <= ${SUM:-$((3 * 4))}; i++)); do
+        local tmp1=Cookie$i
+        local tmp2=${!tmp1}
+        [[ $tmp2 ]] && user_sum=$i || break
+    done
+}
+
 ## 生成pt_pin清单
 gen_pt_pin_array() {
     local tmp1 tmp2 i pt_pin_temp
@@ -165,22 +181,6 @@ export_codes_sub() {
     else
         echo "## 未运行过 $task_name.js 脚本，未产生日志"
     fi
-}
-
-##互助码设置
-import_code_config() {
-    [ ! -n "$name_js" ] && name_js=($(echo ${default_name_js[*]}))
-    [ ! -n "$name_config" ] && name_config=($(echo ${default_name_config[*]}))
-    [ ! -n "$name_chinese" ] && name_chinese=($(echo ${default_name_chinese[*]}))
-}
-
-## 统计用户数量
-count_user_sum() {
-    for ((i = 1; i <= ${SUM:-$((3 * 4))}; i++)); do
-        local tmp1=Cookie$i
-        local tmp2=${!tmp1}
-        [[ $tmp2 ]] && user_sum=$i || break
-    done
 }
 
 ## 汇总输出
