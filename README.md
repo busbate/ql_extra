@@ -68,7 +68,6 @@ name_js_prefix="busbate_jd_"
 ```bash
 ## 需组合的环境变量列表，env_name需要和var_name一一对应，如何有新活动按照格式添加(不懂勿动)
 env_name=(
-  JD_COOKIE
   FRUITSHARECODES
   PETSHARECODES
   PLANT_BEAN_SHARECODES
@@ -85,7 +84,6 @@ env_name=(
 )
 
 var_name=(
-  Cookie
   ForOtherFruit
   ForOtherPet
   ForOtherBean
