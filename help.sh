@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-dir_shell=/ql/shell
-. $dir_shell/share.sh
 dir_code=$dir_log/code
 
 default_env_name=(
