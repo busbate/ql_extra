@@ -62,21 +62,14 @@ import_code_config() {
     [ ! -n "$name_chinese" ] && name_chinese=($(echo ${default_name_chinese[*]}))
 }
 
-## 统计用户
-count_user_sum() {
-    local envs=$(eval echo "\$JD_COOKIE")
-    Cookie=($(echo $envs | sed 's/&/ /g'))
-    user_sum=${#Cookie[*]}
-}
-
 ## 生成pt_pin清单
 gen_pt_pin_array() {
+    local envs=$(eval echo "\$JD_COOKIE")
+    local array=($(echo $envs | sed 's/&/ /g'))
+    user_sum=${#array[*]}
     local tmp1 tmp2 i pt_pin_temp
-    for ((user_num = 1; user_num <= $user_sum; user_num++)); do
-        tmp1=Cookie$user_num
-        tmp2=${!tmp1}
-        i=$(($user_num - 1))
-        pt_pin_temp=$(echo $tmp2 | perl -pe "{s|.*pt_pin=([^; ]+)(?=;?).*|\1|; s|%|\\\x|g}")
+    for ((i = 0; i < $user_sum; i++)); do
+        pt_pin_temp=$(echo ${array[i]} | perl -pe "{s|.*pt_pin=([^; ]+)(?=;?).*|\1|; s|%|\\\x|g}")
         [[ $pt_pin_temp == *\\x* ]] && pt_pin[i]=$(printf $pt_pin_temp) || pt_pin[i]=$pt_pin_temp
     done
 }
@@ -211,7 +204,6 @@ export_all_codes() {
 
 import_config
 import_code_config
-count_user_sum
 gen_pt_pin_array
 
 ## 执行并写入日志
