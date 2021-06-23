@@ -1,3 +1,5 @@
+fork from <https://github.com/vipGhost0/ql_help>
+
 ## 说明
 
 青龙 2.8.0 更新后功能添加：  
@@ -6,37 +8,37 @@
 
 ### 注意
 
-环境变量的 jd cookie 名称分别依次命名为 Cookie1、Cookie2  
 原定时互助码 ql code 更改为 bash /ql/repo/busbate_ql_extra/code.sh
 
 #### task_before.sh
 
-文件名精简为简称，用来作用 TempBlockCookie 参数
+文件名精简为简称，用来作用 TempBlockCookie 参数 TempBlockCookie 更改为 BlockPtPin（感觉用不上这功能，已移除）
 
 ```bash
 if [[ $1 =~ \. ]]; then
- echo 文件简称为：$(echo ${1%%.*}|sed -r "s/.*(j[d|x]_.*)/\1/g")（作用为屏蔽某个ck）
+  echo 文件简称为：$(echo ${1%%.*}|sed -r "s/.*(j[d|x]_.*)/\1/g")（作用为屏蔽某个ck）
 fi
 case $(echo ${1%%.*}|sed -r "s/.*(j[d|x]_.*)/\1/g") in
     jd_pigPet | jd_daily_egg | jd_dreamFactory  )
-     TempBlockCookie="2 4 5"      # 账号5不玩东东农场
+     BlockPtPin=""      # 账号5不玩东东农场
      ;;
-   jd_jdfactory | jd_jxnc | jd_jxmc | jd_car_exchange | jd_jin_tie | jd_cfd )
-     TempBlockCookie="1 2 3 4 5"      # 账号2不玩京喜工厂和东东工厂
+   jd_jdfactory | jd_jxnc | jd_jxmc | jd_car_exchange | jd_jin_tie | jd_cfd  )
+     BlockPtPin=""      # 账号2不玩京喜工厂和东东工厂
      ;;
    jd_health | jd_health_collect | jd_jump | jd_mcxhd )
-    TempBlockCookie="5"    # 新号火爆
+    BlockPtPin=""    # 新号火爆
      ;;
    jd_bean_home | jd_bean_sign | jd_blueCoin | jd_car | jd_cash | jd_club_lottery | jd_jdzz | jd_lotteryMachine | jd_redPacket | jd_superMarket | jd_beauty | jd_family | jd_sgmh | jd_speed_redpocke | jd_speed_sign | jd_syj | jd_carnivalcity | jd_xtg | jd_xtg_help | jd_gold_creator | jd_mohe )
-    TempBlockCookie="2 5"    # 火爆
+    BlockPtPin=""    # 火爆
      ;;
    jd_getFollowGift | jd_EsportsManager)
-    TempBlockCookie="2 5"    # 火爆
+    BlockPtPin=""    # 火爆
      ;;
    jd_ms )
-    TempBlockCookie="2 3 4 5" #  金融限定
+    BlockPtPin="" #  金融限定
      ;;
  esac
+
 ##调用助力
 . /ql/repo/busbate_ql_extra/help.sh
 ```
