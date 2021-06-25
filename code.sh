@@ -3,7 +3,6 @@
 ## 路径、环境判断
 dir_shell=/ql/shell
 . $dir_shell/share.sh
-. $file_task_before
 
 dir_code=$dir_log/code
 

@@ -1,101 +1,65 @@
-## 自动按顺序进行账号间互助（选填） 设置为 true 时，将直接导入code最新日志来进行互助
-AutoHelpOther="true"
-
-## 定义 jcode 脚本导出的互助码模板样式（选填）
-## 不填 使用“按编号顺序助力模板”，Cookie编号在前的优先助力
-## 填 0 使用“全部一致助力模板”，所有账户要助力的码全部一致
-## 填 1 使用“均等机会助力模板”，所有账户获得助力次数一致
-## 填 2 使用“随机顺序助力模板”，本套脚本内账号间随机顺序助力，每次生成的顺序都不一致。
-HelpType=""
-
-##name_js_prefix 批量前缀，可设置为JDHelloWorld_jd_scripts_
-name_js_prefix="busbate_jd_"
-
 ## 需组合的环境变量列表，env_name需要和var_name一一对应，如何有新活动按照格式添加(不懂勿动)
 env_name=(
-  JD_COOKIE
-  FRUITSHARECODES
-  PETSHARECODES
-  PLANT_BEAN_SHARECODES
-  DREAM_FACTORY_SHARE_CODES
-  DDFACTORY_SHARECODES
-  JDZZ_SHARECODES
-  JDJOY_SHARECODES
-  JXNC_SHARECODES
-  BOOKSHOP_SHARECODES
-  JD_CASH_SHARECODES
-  JDSGMH_SHARECODES
-  JDCFD_SHARECODES
-  JDHEALTH_SHARECODES
+    FRUITSHARECODES
+    PETSHARECODES
+    PLANT_BEAN_SHARECODES
+    DREAM_FACTORY_SHARE_CODES
+    DDFACTORY_SHARECODES
+    JDZZ_SHARECODES
+    JDJOY_SHARECODES
+    JXNC_SHARECODES
+    BOOKSHOP_SHARECODES
+    JD_CASH_SHARECODES
+    JDSGMH_SHARECODES
+    JDCFD_SHARECODES
+    JDHEALTH_SHARECODES
 )
 
 var_name=(
-  Cookie
-  ForOtherFruit
-  ForOtherPet
-  ForOtherBean
-  ForOtherDreamFactory
-  ForOtherJdFactory
-  ForOtherJdzz
-  ForOtherJoy
-  ForOtherJxnc
-  ForOtherBookShop
-  ForOtherCash
-  ForOtherSgmh
-  ForOtherCfd
-  ForOtherHealth
+    ForOtherFruit
+    ForOtherPet
+    ForOtherBean
+    ForOtherDreamFactory
+    ForOtherJdFactory
+    ForOtherJdzz
+    ForOtherJoy
+    ForOtherJxnc
+    ForOtherBookShop
+    ForOtherCash
+    ForOtherSgmh
+    ForOtherCfd
+    ForOtherHealth
 )
 
-## name_js为脚本文件名，如果使用ql repo命令拉取，文件名含有作者名
-## 所有有互助码的活动，把脚本名称列在 name_js 中，对应 config.sh 中互助码后缀列在 name_config 中，中文名称列在 name_chinese 中。
-## name_js、name_config 和 name_chinese 中的三个名称必须一一对应。
-name_js=(
-  jd_fruit
-  jd_pet
-  jd_plantBean
-  jd_dreamFactory
-  jd_jdfactory
-  jd_jdzz
-  jd_crazy_joy
-  jd_jxnc
-  jd_bookshop
-  jd_cash
-  jd_sgmh
-  jd_cfd
-  jd_health
-)
+## 组合Cookie和互助码子程序，$1：要组合的内容
+combine_sub() {
+    local what_combine=$1
+    local combined_all=""
+    local tmp1 tmp2
+    local envs=$(eval echo "\$JD_COOKIE")
+    local array=($(echo $envs | sed 's/&/ /g'))
+    local user_sum=${#array[*]}
+    for ((i = 1; i <= $user_sum; i++)); do
+        local tmp1=$what_combine$i
+        local tmp2=${!tmp1}
+        combined_all="$combined_all&$tmp2"
+    done
+    echo $combined_all | perl -pe "{s|^&||; s|^@+||; s|&@|&|g; s|@+&|&|g; s|@+|@|g; s|@+$||}"
+}
 
-name_config=(
-  Fruit
-  Pet
-  Bean
-  DreamFactory
-  JdFactory
-  Jdzz
-  Joy
-  Jxnc
-  BookShop
-  Cash
-  Sgmh
-  Cfd
-  Health
-)
+## 正常依次运行时，组合所有账号的Cookie与互助码
+combine_all() {
+    echo "组合所有账号的Cookie与互助码,共"${#env_name[*]}"个"
+    for ((i = 0; i < ${#env_name[*]}; i++)); do
+        result=$(combine_sub ${var_name[i]})
+        if [[ $result ]]; then
+            export ${env_name[i]}="$result"
+        fi
+    done
+}
 
-name_chinese=(
-  东东农场
-  东东萌宠
-  京东种豆得豆
-  京喜工厂
-  东东工厂
-  京东赚赚
-  crazyJoy任务
-  京喜农场
-  口袋书店
-  签到领现金
-  闪购盲盒
-  京喜财富岛
-  东东健康社区
-)
-
-##调用助力
-. /ql/repo/busbate_ql_extra/help.sh
+if [[ $(ls $dir_code) ]]; then
+    latest_log=$(ls -r $dir_code | head -1)
+    . $dir_code/$latest_log
+    combine_all
+fi
