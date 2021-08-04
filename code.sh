@@ -21,7 +21,6 @@ default_name_js=(
     jd_cfd
     jd_health
 )
-
 default_name_config=(
     Fruit
     Pet
@@ -37,7 +36,6 @@ default_name_config=(
     Cfd
     Health
 )
-
 default_name_chinese=(
     东东农场
     东东萌宠
@@ -53,7 +51,6 @@ default_name_chinese=(
     京喜财富岛
     东东健康社区
 )
-
 ##互助码设置
 import_code_config() {
     [ ! -n "$name_js" ] && name_js=($(echo ${default_name_js[*]}))
@@ -81,7 +78,7 @@ export_codes_sub() {
     local config_name_my=My$config_name
     local config_name_for_other=ForOther$config_name
     local i j k m n pt_pin_in_log code tmp_grep tmp_my_code tmp_for_other user_num random_num_list
-    if cd $dir_log/$task_name &>/dev/null && [[ $(ls) ]]; then
+    if cd $dir_log/$(ls -t $dir_log | grep $task_name | sed -n 1p) &>/dev/null && [[ $(ls) ]]; then
         ## 寻找所有互助码以及对应的pt_pin
         i=0
         pt_pin_in_log=()

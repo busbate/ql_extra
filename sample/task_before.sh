@@ -1,65 +1,28 @@
-## 需组合的环境变量列表，env_name需要和var_name一一对应，如何有新活动按照格式添加(不懂勿动)
-env_name=(
-    FRUITSHARECODES
-    PETSHARECODES
-    PLANT_BEAN_SHARECODES
-    DREAM_FACTORY_SHARE_CODES
-    DDFACTORY_SHARECODES
-    JDZZ_SHARECODES
-    JDJOY_SHARECODES
-    JXNC_SHARECODES
-    BOOKSHOP_SHARECODES
-    JD_CASH_SHARECODES
-    JDSGMH_SHARECODES
-    JDCFD_SHARECODES
-    JDHEALTH_SHARECODES
-)
+#!/usr/bin/env bash
 
-var_name=(
-    ForOtherFruit
-    ForOtherPet
-    ForOtherBean
-    ForOtherDreamFactory
-    ForOtherJdFactory
-    ForOtherJdzz
-    ForOtherJoy
-    ForOtherJxnc
-    ForOtherBookShop
-    ForOtherCash
-    ForOtherSgmh
-    ForOtherCfd
-    ForOtherHealth
-)
-
-## 组合Cookie和互助码子程序，$1：要组合的内容
-combine_sub() {
-    local what_combine=$1
-    local combined_all=""
-    local tmp1 tmp2
-    local envs=$(eval echo "\$JD_COOKIE")
-    local array=($(echo $envs | sed 's/&/ /g'))
-    local user_sum=${#array[*]}
-    for ((i = 1; i <= $user_sum; i++)); do
-        local tmp1=$what_combine$i
-        local tmp2=${!tmp1}
-        combined_all="$combined_all&$tmp2"
-    done
-    echo $combined_all | perl -pe "{s|^&||; s|^@+||; s|&@|&|g; s|@+&|&|g; s|@+|@|g; s|@+$||}"
-}
-
-## 正常依次运行时，组合所有账号的Cookie与互助码
-combine_all() {
-    echo "组合所有账号的Cookie与互助码,共"${#env_name[*]}"个"
-    for ((i = 0; i < ${#env_name[*]}; i++)); do
-        result=$(combine_sub ${var_name[i]})
-        if [[ $result ]]; then
-            export ${env_name[i]}="$result"
-        fi
-    done
-}
-
-if [[ $(ls $dir_code) ]]; then
-    latest_log=$(ls -r $dir_code | head -1)
-    . $dir_code/$latest_log
-    combine_all
+if [[ $1 =~ \. ]]; then
+    echo 文件简称为：$(echo ${1%%.*} | sed -r "s/.*(j[d|x]_.*)/\1/g")（作用为屏蔽某个ck）
 fi
+case $(echo ${1%%.*} | sed -r "s/.*(j[d|x]_.*)/\1/g") in
+jd_pigPet | jd_daily_egg | jd_dreamFactory)
+    BlockPtPin="" # 账号5不玩东东农场
+    ;;
+jd_jdfactory | jd_jxnc | jd_jxmc | jd_car_exchange | jd_jin_tie | jd_cfd)
+    BlockPtPin="" # 账号2不玩京喜工厂和东东工厂
+    ;;
+jd_health | jd_health_collect | jd_jump | jd_mcxhd)
+    BlockPtPin="" # 新号火爆
+    ;;
+jd_bean_home | jd_bean_sign | jd_blueCoin | jd_car | jd_cash | jd_club_lottery | jd_jdzz | jd_lotteryMachine | jd_redPacket | jd_superMarket | jd_beauty | jd_family | jd_sgmh | jd_speed_redpocke | jd_speed_sign | jd_syj | jd_carnivalcity | jd_xtg | jd_xtg_help | jd_gold_creator | jd_mohe)
+    BlockPtPin="" # 火爆
+    ;;
+jd_getFollowGift | jd_EsportsManager)
+    BlockPtPin="" # 火爆
+    ;;
+jd_ms)
+    BlockPtPin="" #  金融限定
+    ;;
+esac
+
+##调用助力
+. /ql/repo/busbate_ql_extra/help.sh
